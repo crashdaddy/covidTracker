@@ -13,6 +13,10 @@ The main table can be sorted by clicking the headers.
 
 TODO: Make it so when the user clicks a country then the table is replaced with another table for just that
 country, along with a "return" button or link.
+ 
+     --- DONE
 
 TODO: On the second table (country), display each area and its statistics. If there is deeper data (Ex: USA goes from country to state then to county) allow the user to click the county and then replace again with that data.
 Provide 2 links: A) back to country and 2) back to global.
+
+     --- DONE

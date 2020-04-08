@@ -1,6 +1,8 @@
 # covidTracker
 A web dashboard to track Covid stats
 
+Live version: https://www.crazyhappyfuntime.com/covidTracker/
+
 The data is provided by Bing.
 
 The endpoint for the API is: https://bing.com/covid/data

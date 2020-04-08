@@ -20,3 +20,6 @@ TODO: On the second table (country), display each area and its statistics. If th
 Provide 2 links: A) back to country and 2) back to global.
 
      --- DONE
+
+
+ADDED: got rid of the three functions that were basically doing the same thing and combined them into one dynamic function

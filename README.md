@@ -23,3 +23,7 @@ Provide 2 links: A) back to country and 2) back to global.
 
 
 ADDED: got rid of the three functions that were basically doing the same thing and combined them into one dynamic function
+
+ADDED: Watchlist capability
+     --- uses localStorage to hold preferences for areas to watch, then displays those areas above all the rest of the data 
+     --- activated by clicking the star icon next to each row of information

@@ -12,7 +12,7 @@
         src: url(css/Montserrat-Regular.otf);
     }
     body {
-        background-color: rgb(42, 45, 77);
+        background-color: rgb(45, 40, 88);
         color: white;
         font-family: montserrat;
     }
@@ -20,24 +20,23 @@
     table.sortable {
         font-size: 10pt;
         width: 100%;
+        border-collapse: collapse;
     }
     table.sortable thead {
         background-color:#000;
         color: yellow;
         font-weight: bold;
         cursor: default;
-        padding-left: 10px;
-        padding-right: 10px;
     }
 
     table.sortable tbody tr:nth-child(2n) td {
-    background: #231835;
     color: lightyellow;
-    padding:4px;
+    padding:10px;
+    background: rgb(45, 40, 88);
     }
     table.sortable tbody tr:nth-child(2n+1) td {
-    background: rgb(45, 40, 88);
-    padding:4px;
+    background: rgb(69, 62, 133);
+    padding:10px;
 }
     #bannerDiv {
         width:90%;
@@ -51,7 +50,7 @@
         border-radius: 15px;
         box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
         vertical-align: top;
-        height: 90px;
+        height: 100px;
         color:black;
     }
     #headerText {
@@ -70,6 +69,21 @@
         width: 60%;
         margin-bottom: 20px;
         padding: 10px;
+    }
+
+    #watched {
+        margin-right: 5%;
+        float: right;
+        border:1px solid black;
+        -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
+        background-color:rgb(69, 62, 133);
+        border-radius: 15px;
+        box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
+        color:white;
+        width: 60%;
+        margin-bottom: 20px;
+        padding: 10px;
+        display: none;
     }
 
     #quickFacts {
@@ -91,10 +105,11 @@
     </head>
     <body>
         <div id="bannerDiv"><img src="img/covid.png" style="float: left;max-width: 70px;margin: 10px;">
-            <div style="height: 50%;vertical-align: top;"><span id="headerText">CrAzy UnhaPpY SaD TimE</span>
-            <span style="font-weight: bold;font-size: x-large;">Covid-19 Tracker</span></div><br/>
+            <div style="height: 50%;margin-top:4px;"><span id="headerText">CrAzy UnhaPpY SaD TimE</span>
+            <span style="font-weight: bold;font-size: x-large;">Covid-19 Tracker</span>
+            <div style="float:right;padding:10px;"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'X7X71LE69');kofiwidget2.draw();</script> </div>
+            </div><br/>
             <div style="float:right;margin-right: 10px;margin-bottom: 10px;"><span style="color:white;font-size: 18px;">Last Update:</span> <span id="lastUpdate" style="font-size: 18px;color: white;"></span></div>
-            <div><span id="travisConfirmed"></span></div>   
         </div>
         <div id="quickFacts"><span style="font-size: 48px;color:yellow;" id="areaTitle"></span>
         <br/>
@@ -113,6 +128,7 @@
                 API Provided by<br>
                 <img src="img/bing.png" style="width:60px;">
         </div>
+        <div id="watched"></div>
         <div id="output">Loading Covid-19 Data <img src="img/ajax-loader.gif"></div>
         <script src="src/jquery-3.4.1.min.js"></script>
         <script src="src/sorttable.js"></script>

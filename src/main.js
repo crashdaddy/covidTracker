@@ -106,7 +106,7 @@ const displayWatched = () => {
             starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStar.png";
         }
     }
-    htmlStr += `<tr><td onclick="watchList('${dataPath.id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.id}" style="width:15px;height:15px"></td>
+    htmlStr += `<tr><td onclick="watchList('${dataPath.id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.id}" style="max-width:30px;height:30px"></td>
     <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.displayName}</td><td style="text-align:right;">${dataPath.totalConfirmed}</td>
     <td style="text-align:center;">${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:black;font-weight:bold;">${dataPath.totalDeaths}</td>
     <td style="text-align:center;color:black;font-weight:bold;">${dataPath.totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.totalRecovered}</td>
@@ -187,7 +187,7 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
             }
         }
         // the html for each row 
-        htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="width:15px;height:15px"></td>
+        htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="max-width:30px;max-height:30px"></td>
         <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.areas[i].displayName}</td><td style="text-align:right;">${dataPath.areas[i].totalConfirmed}</td>
         <td style="text-align:center;">${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:black;font-weight:bold;">${dataPath.areas[i].totalDeaths}</td>
         <td style="text-align:center;color:black;font-weight:bold;">${dataPath.areas[i].totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.areas[i].totalRecovered}</td>

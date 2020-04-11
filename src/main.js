@@ -1,7 +1,11 @@
 
-// the API URL with the CORS-anywhere URL from herokuapp to 
-// avoid CORS errors (Cross-Origin Resource Sharing)
-let api = "https://cors-anywhere.herokuapp.com/https://bing.com/covid/data";
+// The bing API server doesn't allow CORS
+// (cross-origin-resource-sharing)
+// so we built our own server on repl.it to
+// get the data with axios
+// the data is at https://bing.com/covid/data
+// but we fetch it from:
+let api = "https://cors-buster.crashdaddy.repl.co/";
 
 // setup an object where we can store the API results
 // so we don't have to make extra API calls but can
@@ -15,6 +19,9 @@ let notWatching  = "https://www.crazyhappyfuntime.com/covidTracker/img/favorites
 // check the Local Storage for watched areas
 let watched =  JSON.parse(localStorage.getItem("watched")) || [];
 
+// check Local Storage for previous results
+let previousVisit = JSON.parse(localStorage.getItem("previousVisit")) || [];
+
 ////////////////////////
 // Helper Functions
 //
@@ -22,15 +29,16 @@ let watched =  JSON.parse(localStorage.getItem("watched")) || [];
 // setup the function to toggle if the user is watching
 // a certain area or not
 const watchList = (areaName,country,state,county) => {
-    let imgElement = document.getElementById(`watch${areaName}`);
+    // let imgElement = document.getElementById(`watch${areaName}`);
     let alreadyWatching = false;
-    imgElement.src = imgElement.src === watching ? notWatching : watching;
+    // imgElement.src = imgElement.src === 
+    $(`.watch${areaName}`).attr('src',$(`.watch${areaName}`).attr('src') ==watching ? notWatching : watching);
 
     if (watched.length>0) {
     for (let i= 0; i <watched.length;i++) {
         if (watched[i].name===areaName) {
             alreadyWatching = true;
-            watched.splice(i);
+            watched.splice(i,1);
             } 
         }
     } 
@@ -65,6 +73,7 @@ const displayWatched = () => {
                 <th>Change</th><th>Recovered</th><th>Change</th></tr></thead><tbody>`;
 
     for (let i=0;i < watched.length;i++) {
+        
     let countryIdx = watched[i].country;
     let stateIdx   = watched[i].state;
     let countyIdx  = watched[i].county;
@@ -92,11 +101,11 @@ const displayWatched = () => {
     let starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStarBlack.png";
 
     for (let lsIdx=0;lsIdx<watched.length;lsIdx++) {
-        if (watched[lsIdx].name===dataPath.displayName) {
+        if (watched[lsIdx].name===dataPath.id) {
             starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStar.png";
         }
     }
-    htmlStr += `<tr><td onclick="watchList('${dataPath.displayName}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" id="watch${dataPath.displayName}" style="width:15px;height:15px"></td>
+    htmlStr += `<tr><td onclick="watchList('${dataPath.id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.id}" style="width:15px;height:15px"></td>
     <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.displayName}</td><td style="text-align:right;">${dataPath.totalConfirmed}</td>
     <td style="text-align:center;">${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:orangered;font-weight:bold;">${dataPath.totalDeaths}</td>
     <td style="text-align:center;color:orangered;font-weight:bold;">${dataPath.totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.totalRecovered}</td>
@@ -172,12 +181,12 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         let starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStarBlack.png";
 
         for (let lsIdx=0;lsIdx<watched.length;lsIdx++) {
-            if (watched[lsIdx].name===dataPath.areas[i].displayName) {
+            if (watched[lsIdx].name===dataPath.areas[i].id) {
                 starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStar.png";
             }
         }
         // the html for each row 
-        htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].displayName}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" id="watch${dataPath.areas[i].displayName}" style="width:15px;height:15px"></td>
+        htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="width:15px;height:15px"></td>
         <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.areas[i].displayName}</td><td style="text-align:right;">${dataPath.areas[i].totalConfirmed}</td>
         <td style="text-align:center;">${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:orangered;font-weight:bold;">${dataPath.areas[i].totalDeaths}</td>
         <td style="text-align:center;color:orangered;font-weight:bold;">${dataPath.areas[i].totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.areas[i].totalRecovered}</td>
@@ -208,9 +217,6 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
 const getData = () => {
     fetch(api)
         .then(res=>res.json())
-        .catch((error) =>{
-            console.log(error)
-        })
             .then(data => {
                 // store the response data into a local object so we don't have to
                 // keep making API calls if we don't need to
@@ -218,16 +224,24 @@ const getData = () => {
                 // call the display function for the global view (all nulls)
                 displayData(null,null,null);
 
+                // check the Local Storage for data from previous visit
+                // and if there's none, store this data there
+                if (previousVisit.length===0) {
+                    previousVisit = covidData;
+                    localStorage.setItem("previousVisit",JSON.stringify(previousVisit));
+                }
+
                 // check the Local Storage "watched" array, and if there
                 // are any elements call the routine to show those areas
                 if (watched.length>0) {
                     displayWatched();
-                }
+                } else $("#watched").css('display','none');
 
             })
-            .catch((error) => {
-                console.error('Error:', error);
-              });
+            .catch((error) =>{
+            console.log(error)
+            $("#output").html("The API server is busy. Please try later.")
+        })
 }
 
 

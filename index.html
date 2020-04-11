@@ -18,7 +18,7 @@
     }
     /* Sortable tables */
     table.sortable {
-        font-size: 10pt;
+        font-size: 15pt;
         width: 100%;
         border-collapse: collapse;
     }
@@ -39,7 +39,7 @@
     padding:10px;
 }
     #bannerDiv {
-        width:90%;
+        max-width:95%;
         margin-left: auto;
         margin-right: auto;
         margin-top: 10px;
@@ -52,55 +52,28 @@
         vertical-align: top;
         height: 100px;
         color:black;
+        padding: 10px;
     }
     #headerText {
         font-size: 32px;
         color:palegoldenrod;
     }
-    #output {
-        margin-right: 5%;
-        float: right;
+    
+    #watched, #quickFacts, #attribution, #output {
+        margin-right: auto;
+        margin-left: auto;
         border:1px solid black;
         -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
         background-color:rgb(69, 62, 133);
         border-radius: 15px;
         box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
         color:white;
-        width: 60%;
+        max-width: 95%;
         margin-bottom: 20px;
         padding: 10px;
-    }
-
-    #watched {
-        margin-right: 5%;
-        float: right;
-        border:1px solid black;
-        -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
-        background-color:rgb(69, 62, 133);
-        border-radius: 15px;
-        box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
-        color:white;
-        width: 60%;
-        margin-bottom: 20px;
-        padding: 10px;
-        display: none;
-    }
-
-    #quickFacts {
-        clear: both;
-        margin-left: 5%;
-        float: left;
-        z-index: -1;
-        border:1px solid black;
-        -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
-        background-color:rgb(69, 62, 133);
-        border-radius: 15px;
-        box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
-        color:white;
         text-align: center;
-        width:25%;
-        padding-top: 20px;
     }
+
     </style>
     </head>
     <body>
@@ -111,25 +84,28 @@
             </div><br/>
             <div style="float:right;margin-right: 10px;margin-bottom: 10px;"><span style="color:white;font-size: 18px;">Last Update:</span> <span id="lastUpdate" style="font-size: 18px;color: white;"></span></div>
         </div>
-        <div id="quickFacts"><span style="font-size: 48px;color:yellow;" id="areaTitle"></span>
-        <br/>
-        <p/>
-        
+        <div id="quickFacts"><span style="font-size: 48px;color:yellow;" id="areaTitle"></span><br/>
+        <div style="display: inline-block;">       
         <span style="font-size: 48px;color: lightblue;margin-top: 30px;" id="globalTotal"></span><br/>
-        Confirmed Cases<p/>
+        Confirmed Cases
+        </div>
+        <div style="display: inline-block;margin-left:20px;margin-right:20px;">
         <span style="font-size: 48px;color: #F65164;margin-top: 30px" id="deathsTotal"></span><br/>
-        Deceased<p/>
+        Deceased
+        </div>
+        <div style="display: inline-block;">
         <span style="font-size: 48px;color:white;margin-top: 30px" id="recoveredTotal"></span><br/>
-        Recovered<br/>
-        <p/>            
-        <div style="font-size: 10pt;margin-top:30px;margin-bottom: 10px;color:black;">Data is sourced from the 
-                Centers for Disease Control and Prevention, World Health Organization, 
-                and European Centre for Disease Prevention and Control.</div>
-                API Provided by<br>
-                <img src="img/bing.png" style="width:60px;">
+        Recovered
+        </div>
+        <br/> 
         </div>
         <div id="watched"></div>
         <div id="output">Loading Covid-19 Data <img src="img/ajax-loader.gif"></div>
+        <div id="attribution"><div style="font-size: 10pt;margin-top:30px;margin-bottom: 10px;color:black;">Data is sourced from the 
+                Centers for Disease Control and Prevention, World Health Organization, 
+                and European Centre for Disease Prevention and Control.</div>
+                API Provided by<br>
+                <img src="img/bing.png" style="width:60px;"></div>
         <script src="src/jquery-3.4.1.min.js"></script>
         <script src="src/sorttable.js"></script>
         <script src="src/main.js"></script>

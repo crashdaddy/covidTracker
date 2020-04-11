@@ -27,3 +27,29 @@ ADDED: got rid of the three functions that were basically doing the same thing a
 ADDED: Watchlist capability
      --- uses localStorage to hold preferences for areas to watch, then displays those areas above all the rest of the data 
      --- activated by clicking the star icon next to each row of information
+
+
+New Plan:
+
+1: I was saving the "watched" locations by {name,countryIdx,StateIdx,countyIdx} which seemed pretty reasonable until I discovered (with no instructions from Bing) that those "indexes" are actually "scores". So when Dekalb County, Georgia reported one more case than Travis County, Texas, if you had Travis county on your watchlist it would now have Dekalb, Georgia's info.
+
+  -- removed a bug where it wasn't toggling the star in both the watchlist and the output because I was using
+  getElementById, so I changed it to getElementsByClass to toggle them all
+
+2: That whole CORS thing. Hassan clearly thinks bigger than me, because I'm like "200 hits/ hour? That's more than enough!" but Hassan's right. So now we have to build a CORS proxy.
+
+  -- Built a proxy server on repl.it (thanks, Jon Woo!) to use an axios fetch to get the data from cross-origin, then just hand it back to us. It's at: https://cors-buster.crashdaddy.repl.co/
+
+3: Storing the dataset into localStorage (I already checked--there's plenty of space) and then pulling it back out to compare on the next visit.
+
+  -- storing the data set, but haven't done anything with it yet
+
+4: CSS to make it responsive to mobile. That calls for basically a whole rebuild because the data is output in a table, so it would need to be changed to grids or divs or something else I'm not very good at.
+
+  -- edited the CSS so it looks good on mobile now. Moved the attribution information to its own panel at the bottom because it made the Global Stats panel look awkward.
+
+5: Still haven't gotten a map yet.
+
+  -- thinking about not using a map, but using a chart at the end of each row to plot the progression of spread against the progression of deaths (rip) and the progression of recoveries (yay)
+
+  

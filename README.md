@@ -48,8 +48,9 @@ New Plan:
 
   -- edited the CSS so it looks good on mobile now. Moved the attribution information to its own panel at the bottom because it made the Global Stats panel look awkward.
 
+  -- edited colors
+
 5: Still haven't gotten a map yet.
 
   -- thinking about not using a map, but using a chart at the end of each row to plot the progression of spread against the progression of deaths (rip) and the progression of recoveries (yay)
 
-  

@@ -12,8 +12,8 @@
         src: url(css/Montserrat-Regular.otf);
     }
     body {
-        background-color: rgb(45, 40, 88);
-        color: white;
+        background-color: rgb(72,70,87);
+        color: rgb(214,214,214);
         font-family: montserrat;
     }
     /* Sortable tables */
@@ -24,13 +24,13 @@
     }
     table.sortable thead {
         background-color:#000;
-        color: yellow;
+        color: rgb(62,127,133);
         font-weight: bold;
         cursor: default;
     }
 
     table.sortable tbody tr:nth-child(2n) td {
-    color: lightyellow;
+    color: rgb(214,214,214);
     padding:10px;
     background: rgb(45, 40, 88);
     }
@@ -56,7 +56,7 @@
     }
     #headerText {
         font-size: 32px;
-        color:palegoldenrod;
+        color:rgb(214,214,214);
     }
     
     #watched, #quickFacts, #attribution, #output {
@@ -67,11 +67,54 @@
         background-color:rgb(69, 62, 133);
         border-radius: 15px;
         box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
-        color:white;
+        color:rgb(214,214,214);
         max-width: 95%;
         margin-bottom: 20px;
         padding: 10px;
         text-align: center;
+    }
+
+    #confirmed {
+        font-size: 36px;
+        color: white;
+        margin-top: 30px;
+        -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
+        background: rgb(241,15,15);
+        background: linear-gradient(20deg, rgba(241,15,15,1) 2%, rgba(237,72,72,1) 49%, rgba(242,85,80,1) 91%);
+        border-radius: 15px;
+        box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
+        width:30%;
+        display: inline-block;
+        height: 100px;
+    }
+
+    #dead {
+        font-size: 36px;
+        color: white;
+        margin-top: 30px;
+        -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
+        background: rgb(6,6,6);
+        background: linear-gradient(20deg, rgba(6,6,6,1) 2%, rgba(88,88,88,1) 49%, rgba(138,136,136,1) 91%);
+        border-radius: 15px;
+        box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
+        width:30%;
+        display: inline-block;
+        height: 100px;
+        margin-left:20px;
+        margin-right: 20px;
+    }
+
+    #recovered {
+        font-size: 36px;
+        color: white;
+        margin-top: 30px;
+        -webkit-box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.75); 
+        background: rgb(88,247,0);
+background: linear-gradient(20deg, rgba(88,247,0,1) 2%, rgba(35,209,19,1) 42%, rgba(102,251,107,1) 91%);         border-radius: 15px;
+        box-shadow: 5px 5px 7px 0px rgba(0,0,0,0.5);
+        width:30%;
+        display: inline-block;
+        height: 100px;
     }
 
     </style>
@@ -82,19 +125,20 @@
             <span style="font-weight: bold;font-size: x-large;">Covid-19 Tracker</span>
             <div style="float:right;padding:10px;"><script type='text/javascript' src='https://ko-fi.com/widgets/widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Me on Ko-fi', '#29abe0', 'X7X71LE69');kofiwidget2.draw();</script> </div>
             </div><br/>
-            <div style="float:right;margin-right: 10px;margin-bottom: 10px;"><span style="color:white;font-size: 18px;">Last Update:</span> <span id="lastUpdate" style="font-size: 18px;color: white;"></span></div>
+            <div style="float:right;margin-right: 10px;margin-bottom: 10px;color:rgb(214,214,214);"><span style="font-size: 18px;">Last Update:</span> <span id="lastUpdate" style="font-size: 18px;"></span></div>
         </div>
-        <div id="quickFacts"><span style="font-size: 48px;color:yellow;" id="areaTitle"></span><br/>
-        <div style="display: inline-block;">       
-        <span style="font-size: 48px;color: lightblue;margin-top: 30px;" id="globalTotal"></span><br/>
-        Confirmed Cases
+        <div id="quickFacts"><span style="font-size: 48px;color:rgb(214,214,214);" id="areaTitle"></span>
+        <br/>
+        <div id="confirmed">       
+        <span style="font-size: 48px;color: #9b0303;margin-top: 30px" id="globalTotal"></span><br/>
+        Confirmed
         </div>
-        <div style="display: inline-block;margin-left:20px;margin-right:20px;">
-        <span style="font-size: 48px;color: #F65164;margin-top: 30px" id="deathsTotal"></span><br/>
+        <div id="dead">
+        <span style="font-size: 48px;color: black;margin-top: 30px" id="deathsTotal"></span><br/>
         Deceased
         </div>
-        <div style="display: inline-block;">
-        <span style="font-size: 48px;color:white;margin-top: 30px" id="recoveredTotal"></span><br/>
+        <div id="recovered">
+        <span style="font-size: 48px;color:rgb(1, 129, 1);margin-top: 30px" id="recoveredTotal"></span><br/>
         Recovered
         </div>
         <br/> 

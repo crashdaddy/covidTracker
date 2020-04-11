@@ -58,6 +58,7 @@ const watchList = (areaName,country,state,county) => {
 const displayWatched = () => {
     // show the table
     $("#watched").css('display','block');
+    let headerWidth = $("#setWidth").css('width');
 
     // invent a variable to hold the path into the object
     // where the area we're hunting for can be found
@@ -69,7 +70,7 @@ const displayWatched = () => {
     // start building the table and the header row
     htmlStr += `<div style="width:100%;text-align:left;padding-bottom:2px;font-size:14px;">Watchlist</div>
                 <table id = "watchedTable" class="sortable">
-                <thead><tr><th></th><th>Location</th><th>Cases</th><th>Change</th><th>Deaths</th>
+                <thead><tr><th></th><th style="width:${headerWidth};">Location</th><th>Cases</th><th>Change</th><th>Deaths</th>
                 <th>Change</th><th>Recovered</th><th>Change</th></tr></thead><tbody>`;
 
     for (let i=0;i < watched.length;i++) {
@@ -107,8 +108,8 @@ const displayWatched = () => {
     }
     htmlStr += `<tr><td onclick="watchList('${dataPath.id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.id}" style="width:15px;height:15px"></td>
     <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.displayName}</td><td style="text-align:right;">${dataPath.totalConfirmed}</td>
-    <td style="text-align:center;">${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:orangered;font-weight:bold;">${dataPath.totalDeaths}</td>
-    <td style="text-align:center;color:orangered;font-weight:bold;">${dataPath.totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.totalRecovered}</td>
+    <td style="text-align:center;">${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:black;font-weight:bold;">${dataPath.totalDeaths}</td>
+    <td style="text-align:center;color:black;font-weight:bold;">${dataPath.totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.totalRecovered}</td>
     <td style="text-align:center;">${dataPath.totalRecoveredDelta} / ${totalRecoveredChgPercent}%</td></tr>`
     }
 
@@ -163,7 +164,7 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
 
         // start building the table and the header row
         htmlStr += `<table id = "outputTable" class="sortable">
-                    <thead><tr><th></th><th>Location</th><th>Cases</th><th>Change</th><th>Deaths</th>
+                    <thead><tr><th></th><th id="setWidth">Location</th><th>Cases</th><th>Change</th><th>Deaths</th>
                     <th>Change</th><th>Recovered</th><th>Change</th></tr></thead><tbody>`;
 
         // loop through whichever array the path leads us to
@@ -188,8 +189,8 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         // the html for each row 
         htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="width:15px;height:15px"></td>
         <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.areas[i].displayName}</td><td style="text-align:right;">${dataPath.areas[i].totalConfirmed}</td>
-        <td style="text-align:center;">${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:orangered;font-weight:bold;">${dataPath.areas[i].totalDeaths}</td>
-        <td style="text-align:center;color:orangered;font-weight:bold;">${dataPath.areas[i].totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.areas[i].totalRecovered}</td>
+        <td style="text-align:center;">${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:black;font-weight:bold;">${dataPath.areas[i].totalDeaths}</td>
+        <td style="text-align:center;color:black;font-weight:bold;">${dataPath.areas[i].totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.areas[i].totalRecovered}</td>
         <td style="text-align:center;">${dataPath.areas[i].totalRecoveredDelta} / ${totalRecoveredChgPercent}%</td></tr>`
         }
 

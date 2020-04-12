@@ -234,11 +234,21 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         // update the Stats panel
         let updateDate = new Date(dataPath.lastUpdated)
         let updateStr  = updateDate.toLocaleDateString() + " " + updateDate.toLocaleTimeString();
-        $("#globalTotal").html(dataPath.totalConfirmed.toLocaleString());
-        $("#deathsTotal").html(dataPath.totalDeaths.toLocaleString());
-        $("#recoveredTotal").html(dataPath.totalRecovered.toLocaleString());
+        let recoverdStat;
+        let deathStat;
+        let globalStat;
+        if (dataPath.totalRecovered) {recoverdStat = dataPath.totalRecovered.toLocaleString()} else recoverdStat=0;
+        if (dataPath.totalDeaths) {deathStat = dataPath.totalDeaths.toLocaleString()} else deathStat=0;
+        if (dataPath.totalConfirmed) {globalStat = dataPath.totalConfirmed.toLocaleString()} else globalStat=0;
+        $("#globalTotal").html(globalStat.toLocaleString());
+        $("#deathsTotal").html(deathStat.toLocaleString());
+        $("#recoveredTotal").html(recoverdStat.toLocaleString());
         $("#lastUpdate").html(updateStr);
         $("#areaTitle").html(dataPath.displayName + " Stats");
+        // scroll back up to the top when a user clicks down a level
+        // so they can see the cumulative stats for that level
+        // this changes the scrolling behavior to "smooth"
+        window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 const getData = () => {

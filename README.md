@@ -36,6 +36,10 @@ New Plan:
   -- removed a bug where it wasn't toggling the star in both the watchlist and the output because I was using
   getElementById, so I changed it to getElementsByClass to toggle them all
 
+  -- 4/12 rebuilt the entire algorithm for storing watchlist items and displaying them. Now instead of using 
+  index arrays to find the watched areas we have to do a breadth-first search for the countryname, then the state
+  and then the county. It was a huge ordeal.
+
 2: That whole CORS thing. Hassan clearly thinks bigger than me, because I'm like "200 hits/ hour? That's more than enough!" but Hassan's right. So now we have to build a CORS proxy.
 
   -- Built a proxy server on repl.it (thanks, Jon Woo!) to use an axios fetch to get the data from cross-origin, then just hand it back to us. It's at: https://cors-buster.crashdaddy.repl.co/

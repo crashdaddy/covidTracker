@@ -26,6 +26,14 @@ let previousVisit = JSON.parse(localStorage.getItem("previousVisit")) || [];
 // Helper Functions
 //
 
+// clear out the watchlist when user clicks "clear watchlist" link
+const clearWatchList = () => {
+    watched=[];
+    localStorage.setItem("watched",JSON.stringify(watched));
+    $("#watched").css('display','none');
+    displayData(null,null,null);
+}
+
 // setup the function to toggle if the user is watching
 // a certain area or not
 const watchList = (areaName,country,state,county) => {
@@ -33,7 +41,7 @@ const watchList = (areaName,country,state,county) => {
     let alreadyWatching = false;
     // imgElement.src = imgElement.src === 
     $(`.watch${areaName}`).attr('src',$(`.watch${areaName}`).attr('src') ==watching ? notWatching : watching);
-
+    if (watched===null) {watched=[];}
     if (watched.length>0) {
     for (let i= 0; i <watched.length;i++) {
         if (watched[i].name===areaName) {
@@ -42,7 +50,7 @@ const watchList = (areaName,country,state,county) => {
             } 
         }
     } 
-
+    
     if (!alreadyWatching) watched.push({"name": areaName,"country": country,"state":state,"county":county});
     localStorage.setItem("watched",JSON.stringify(watched));
     if (watched.length>0) {
@@ -68,7 +76,7 @@ const displayWatched = () => {
     let htmlStr="";
 
     // start building the table and the header row
-    htmlStr += `<div style="width:100%;text-align:left;padding-bottom:2px;font-size:14px;">Watchlist</div>
+    htmlStr += `<div style="width:100%;text-align:right;padding-bottom:2px;font-size:14px;" onclick="clearWatchList()">Clear Watchlist</div>
                 <table id = "watchedTable" class="sortable">
                 <thead><tr><th></th><th style="width:${headerWidth};">Location</th><th>Cases</th><th>Change</th><th>Deaths</th>
                 <th>Change</th><th>Recovered</th><th>Change</th></tr></thead><tbody>`;
@@ -79,19 +87,54 @@ const displayWatched = () => {
     let stateIdx   = watched[i].state;
     let countyIdx  = watched[i].county;
 
+    // variables to hold for our displayData link
+    let level1 = null;
+    let level2 = null;
+    let level3 = null;
+
     // if all the parameters are null, our record is in the global view
-    if (countryIdx != null && stateIdx===null && countyIdx===null) {
-        dataPath=covidData.areas[countryIdx];
+    // if not:
+    if (countryIdx != 'undefined' && stateIdx==='undefined' && countyIdx==='undefined') {
+        // find the path to this country
+        for (let i=0;i<covidData.areas.length;i++) {
+            if (covidData.areas[i].id===countryIdx) {
+                dataPath=covidData.areas[i];
+                level1=i;
+            }
+        }
     }
     // if there's a country and no state index, just show the country
-    if (countryIdx != null && stateIdx != null && countyIdx===null) {
-            // this is the path in the API object to where state data resides
-            dataPath=covidData.areas[countryIdx].areas[stateIdx];
+    if (countryIdx != 'undefined' && stateIdx != 'undefined' && countyIdx==='undefined') {
+            // find the path in the API object to where state data resides
+            for (let i=0;i<covidData.areas.length;i++){
+                if (covidData.areas[i].id===countryIdx){
+                    for (let j=0;j<covidData.areas[i].areas.length;j++){
+                        if (covidData.areas[i].areas[j].id===stateIdx) {
+                             dataPath=covidData.areas[i].areas[j];
+                             level1=i;
+                             level2=j;
+                        }
+                    }
+                }
+            }
     }
     // if there's a country and a state, then we're going to show counties
-    if (countryIdx!= null && stateIdx != null && countyIdx != null) { 
-            // here's the path to the counties array
-            dataPath=covidData.areas[countryIdx].areas[stateIdx].areas[countyIdx];
+    if (countryIdx!= 'undefined' && stateIdx != 'undefined' && countyIdx != 'undefined') { 
+            // find the path to the counties array
+            for (let i=0;i<covidData.areas.length;i++){
+                if (covidData.areas[i].id===countryIdx){
+                    for (let j=0;j<covidData.areas[i].areas.length;j++){
+                        for (let k=0;k<covidData.areas[i].areas[j].areas.length;k++) {
+                        if (covidData.areas[i].areas[j].areas[k].id===countyIdx) {
+                             dataPath=covidData.areas[i].areas[j].areas[k];
+                             level1=i;
+                             level2=j;
+                             level3=k;
+                        }
+                    }
+                }
+            }
+        }
     }
 
             // calculate percentages
@@ -106,8 +149,8 @@ const displayWatched = () => {
             starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStar.png";
         }
     }
-    htmlStr += `<tr><td onclick="watchList('${dataPath.id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.id}" style="max-width:30px;height:30px"></td>
-    <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.displayName}</td><td style="text-align:right;">${dataPath.totalConfirmed}</td>
+    htmlStr += `<tr><td onclick="watchList('${dataPath.id}','${countryIdx}','${stateIdx}','${countyIdx}')"><img src="${starPic}" class="watch${dataPath.id}" style="max-width:30px;height:30px"></td>
+    <td onclick="displayData(${level1},${level2},${level3})">${dataPath.displayName}</td><td style="text-align:right;">${dataPath.totalConfirmed}</td>
     <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.totalConfirmedDelta}">
     <span>${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</span>
     <div class="greenDiv">
@@ -144,9 +187,20 @@ const displayWatched = () => {
 // we're going to reuse this function whenever the user clicks 
 // on a row to dig into the data, which is why we'll be tracking "level"
 const displayData = (countryIdx,stateIdx,countyIdx) => {
+    // get the Local Storage array of watched areas
+    watched = JSON.parse(localStorage.getItem("watched"));
+    // scroll back up to the top when a user clicks down a level
+    // so they can see the cumulative stats for that level
+    // this changes the scrolling behavior to "smooth"
+    var body = $("html, body");
+    body.stop().animate({scrollTop:0}, 500, 'swing');
     // invent a variable to hold the path into the object
     // where the area we're hunting for can be found
     let dataPath;
+    // make the variables for the watch button
+    let countryName;
+    let stateName;
+    let countyName;
     // level 1 is the default global view
     let level = 1;
         // if all the parameters are null, show the global view
@@ -155,6 +209,8 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         if (countryIdx != null && stateIdx===null) {
                 // this is the path in the API object to where state data resides
                 dataPath=covidData.areas[countryIdx];
+                // set country name
+                countryName=covidData.areas[countryIdx].id;
                 // set the level to 2
                 level = 2;
         }
@@ -162,6 +218,9 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         if (countryIdx!= null && stateIdx != null) { 
                 // here's the path to the counties array
                 dataPath=covidData.areas[countryIdx].areas[stateIdx];
+                // set country and state
+                countryName=covidData.areas[countryIdx].id;
+                stateName  =covidData.areas[countryIdx].areas[stateIdx].id;
                 // set the level to 3
                 level=3;
         }
@@ -185,9 +244,18 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         // loop through whichever array the path leads us to
         for (let i=0;i<dataPath.areas.length;i++) {
         // set the variables we're going to need for the onclick function of the table row
-        if (level===1) countryIdx=i;
-        if (level===2) stateIdx=i;
-        if (level===3) countyIdx=i;
+        if (level===1) {
+            countryIdx=i;
+            countryName=dataPath.areas[i].id;
+        }
+        if (level===2) {
+            stateIdx=i;
+            stateName=dataPath.areas[i].id;
+        }
+        if (level===3) {
+            countyIdx=i;
+            countyName=dataPath.areas[i].id;
+        }
 
         // calculate percentages
         let totalConfirmedChgPercent = ((dataPath.areas[i].totalConfirmedDelta/dataPath.areas[i].totalConfirmed)*100).toFixed(2);
@@ -196,13 +264,15 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
 
         let starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStarBlack.png";
 
+        if (watched){
         for (let lsIdx=0;lsIdx<watched.length;lsIdx++) {
             if (watched[lsIdx].name===dataPath.areas[i].id) {
                 starPic = "https://www.crazyhappyfuntime.com/covidTracker/img/favoritesStar.png";
             }
         }
+        }
         // the html for each row 
-        htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="max-width:30px;max-height:30px"></td>
+        htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}','${countryName}','${stateName}','${countyName}')"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="max-width:30px;max-height:30px"></td>
         <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.areas[i].displayName}</td><td style="text-align:right;">${dataPath.areas[i].totalConfirmed}</td>
         <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.areas[i].totalConfirmedDelta}">
         <span>${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</span>
@@ -245,10 +315,7 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         $("#recoveredTotal").html(recoverdStat.toLocaleString());
         $("#lastUpdate").html(updateStr);
         $("#areaTitle").html(dataPath.displayName + " Stats");
-        // scroll back up to the top when a user clicks down a level
-        // so they can see the cumulative stats for that level
-        // this changes the scrolling behavior to "smooth"
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+
 }
 
 const getData = () => {
@@ -270,7 +337,7 @@ const getData = () => {
 
                 // check the Local Storage "watched" array, and if there
                 // are any elements call the routine to show those areas
-                if (watched.length>0) {
+                if (watched != null && watched.length>0) {
                     displayWatched();
                 } else $("#watched").css('display','none');
 

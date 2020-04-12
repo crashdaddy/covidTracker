@@ -108,9 +108,24 @@ const displayWatched = () => {
     }
     htmlStr += `<tr><td onclick="watchList('${dataPath.id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.id}" style="max-width:30px;height:30px"></td>
     <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.displayName}</td><td style="text-align:right;">${dataPath.totalConfirmed}</td>
-    <td style="text-align:center;">${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:black;font-weight:bold;">${dataPath.totalDeaths}</td>
-    <td style="text-align:center;color:black;font-weight:bold;">${dataPath.totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.totalRecovered}</td>
-    <td style="text-align:center;">${dataPath.totalRecoveredDelta} / ${totalRecoveredChgPercent}%</td></tr>`
+    <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.totalConfirmedDelta}">
+    <span>${dataPath.totalConfirmedDelta} / ${totalConfirmedChgPercent}%</span>
+    <div class="greenDiv">
+    <div class="redDiv" style="width:${totalConfirmedChgPercent}%;">
+    </div></div></td>
+    <td style="text-align:right;color:black;font-weight:bold;">${dataPath.totalDeaths}</td>
+    <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.totalDeathsDelta}">
+    <span>${dataPath.totalDeathsDelta} / ${totalDeathsChgPercent}%</span>
+    <div class="greenDiv">
+    <div class="redDiv" style="width:${totalDeathsChgPercent}%;">
+    </div></div></td>
+    <td style="text-align:right;">${dataPath.totalRecovered}</td>
+    <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.totalRecoveredDelta}">
+    <span>${dataPath.totalRecoveredDelta} / ${totalRecoveredChgPercent}%</span>
+    <div class="redDiv">
+    <div class="greenDiv" style="width:${totalRecoveredChgPercent}%;">
+    
+    </div></div></td></tr>`
     }
 
     // once we've looped through the array, close up the table
@@ -189,9 +204,20 @@ const displayData = (countryIdx,stateIdx,countyIdx) => {
         // the html for each row 
         htmlStr += `<tr id = "${i}"><td onclick="watchList('${dataPath.areas[i].id}',${countryIdx},${stateIdx},${countyIdx})"><img src="${starPic}" class="watch${dataPath.areas[i].id}" style="max-width:30px;max-height:30px"></td>
         <td onclick="displayData(${countryIdx},${stateIdx},${countyIdx})">${dataPath.areas[i].displayName}</td><td style="text-align:right;">${dataPath.areas[i].totalConfirmed}</td>
-        <td style="text-align:center;">${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</td><td style="text-align:right;color:black;font-weight:bold;">${dataPath.areas[i].totalDeaths}</td>
-        <td style="text-align:center;color:black;font-weight:bold;">${dataPath.areas[i].totalDeathsDelta} / ${totalDeathsChgPercent}%</td><td style="text-align:right;">${dataPath.areas[i].totalRecovered}</td>
-        <td style="text-align:center;">${dataPath.areas[i].totalRecoveredDelta} / ${totalRecoveredChgPercent}%</td></tr>`
+        <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.areas[i].totalConfirmedDelta}">
+        <span>${dataPath.areas[i].totalConfirmedDelta} / ${totalConfirmedChgPercent}%</span>
+        <div class="greenDiv">
+        <div class="redDiv" style="width:${totalConfirmedChgPercent}%;">
+        </div></div></td>
+        <td style="text-align:right;color:black;font-weight:bold;">${dataPath.areas[i].totalDeaths}</td>
+        <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.areas[i].totalDeathsDelta}"><span>${dataPath.areas[i].totalDeathsDelta} / ${totalDeathsChgPercent}%</span>
+        <div class="greenDiv">
+        <div class="redDiv" style="width:${totalDeathsChgPercent}%">
+        </div></div></td><td style="text-align:right;">${dataPath.areas[i].totalRecovered}</td>
+        <td style="text-align:center;font-size:x-small;" sorttable_customkey="${dataPath.areas[i].totalRecoveredDelta}"><span>${dataPath.areas[i].totalRecoveredDelta} / ${totalRecoveredChgPercent}%</span>
+        <div class="redDiv">
+        <div class="greenDiv" style="width:${totalRecoveredChgPercent}%;">
+        </div></div></td></tr>`
         }
 
         // once we've looped through the array, close up the table

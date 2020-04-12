@@ -54,3 +54,4 @@ New Plan:
 
   -- thinking about not using a map, but using a chart at the end of each row to plot the progression of spread against the progression of deaths (rip) and the progression of recoveries (yay)
 
+Update: added toLocalString to stats to put commas in big numbers
